@@ -9,8 +9,7 @@ const UpdateSong = () =>{
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
-        singer: "",
-        title: ""
+        song: "",
     });
 
     const handleInputChange = (event) => {

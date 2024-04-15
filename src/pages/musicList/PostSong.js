@@ -2,12 +2,19 @@ import { useState } from "react";
 import "./PostSong.css";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
+
+// HTML 엔티티를 디코딩하는 함수
+function decodeHTMLEntities(text) {
+    var textArea = document.createElement('textarea');
+    textArea.innerHTML = text;
+    return textArea.value;
+}
 const PostSong = () => {
     const [formData, setFormData] = useState({
-        singer: "",
-        title: ""
+        song: "",
+        searchResults: [] // Initialize search results as an empty array
     });
 
     const handleInputChange = (event) => {
@@ -20,24 +27,55 @@ const PostSong = () => {
 
     const navigate = useNavigate();
 
-    const handleSubmit = async(e) =>{
-        e.preventDefault();
-
-        console.log(formData);
-
-        try{
-            const response = await fetch("http://localhost:8080/api/musicList",{
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(formData)
+    const handleSearch = async () => {
+        try {
+            const searchQuery = encodeURIComponent(formData.song); // Encode search query
+            const response = await fetch(`https://www.googleapis.com/youtube/v3/search?q=${searchQuery}&key=AIzaSyBGiZzA7476f7x48yp25UYKYn_IoxC6XjU&part=snippet&maxResults=3`,{
+                method: "GET",
             });
 
-            const data =await response.json();
-            console.log("A music is requested : ", data);
-            navigate("/")
-
+            if(response.ok) {
+                const data = await response.json();
+                // 디코딩하여 제목을 정상적으로 표시
+                const searchResults = data.items.map(item => ({
+                    ...item,
+                    snippet: {
+                        ...item.snippet,
+                        title: decodeHTMLEntities(item.snippet.title)
+                    }
+                }));
+                setFormData({
+                    ...formData,
+                    searchResults: searchResults || []
+                });
+            } else {
+                throw new Error("Failed to fetch search results");
+            }
         } catch(error){
-            console.log("Error creating musiclist", error.message);
+            console.error("Error fetching search results: ", error);
+        }
+    }
+
+    const handleSongClick = (selectedSong) => {
+        // 클릭된 곡 정보를 서버로 전송
+        sendSongToServer(selectedSong);
+    }
+
+    const sendSongToServer = async (selectedSong) => {
+        try {
+            const response = await fetch("/api/addToPlaylist", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ song: selectedSong })
+            });
+
+            if(response.ok) {
+                alert("Song added to playlist successfully!");
+            } else {
+                throw new Error("Failed to add song to playlist");
+            }
+        } catch(error){
+            console.error("Error adding song to playlist: ", error);
         }
     }
 
@@ -45,22 +83,13 @@ const PostSong = () => {
         <>
             <div className="center-form">
                 <h1>Request your favorite song!!</h1>
-                <Form onSubmit={handleSubmit}>
+                <Form onSubmit={(e) => { e.preventDefault(); handleSearch(); }}>
                     <Form.Group controlId="formBasicName" autoComplete="off">
                         <Form.Control
                             type="text"
-                            name="singer"
-                            placeholder="歌手のお名前を入力してください"
-                            defaultValue={formData.singer}
-                            onChange={handleInputChange}
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="formBasicName" autoComplete="off">
-                        <Form.Control
-                            type="title"
-                            name="title"
-                            placeholder="タイトルを入力してください"
-                            defaultValue={formData.title}
+                            name="song"
+                            placeholder="曲を入力してください"
+                            value={formData.song}
                             onChange={handleInputChange}
                         />
                     </Form.Group>
@@ -70,22 +99,20 @@ const PostSong = () => {
                 </Form>
                 <div className="youtube-container">
                     <h2>検索結果</h2>
-                    {/*ユーチューブのAPIを入れる*/}
-                    {/*<div className="youtube-video">*/}
-                    {/*    <iframe*/}
-                    {/*        width="859"*/}
-                    {/*        height="483"*/}
-                    {/*        src="https://www.youtube.com/embed/P9tKTxbgdkk"*/}
-                    {/*        title="TXT (투모로우바이투게더) 'Sugar Rush Ride' Official MV"*/}
-                    {/*        frameBorder="0"*/}
-                    {/*        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"*/}
-                    {/*        referrerPolicy="strict-origin-when-cross-origin"*/}
-                    {/*        allowFullScreen*/}
-                    {/*    ></iframe>*/}
-                    {/*</div>*/}
-                    <Button variant="primary" className="btn-request">
-                        申請
-                    </Button>
+                    <ul>
+                        {formData.searchResults.map((item, index) => (
+                            <li key={index} onClick={() => handleSongClick(item)}>
+                                <div>
+                                    {/* 유튜브 섬네일 이미지 표시 */}
+                                    <img src={item.snippet.thumbnails.default.url} alt="Thumbnail" />
+                                </div>
+                                <div>
+                                    {/* 검색 결과 제목 표시 */}
+                                    <p>{item.snippet.title}</p>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             </div>
         </>

@@ -7,21 +7,27 @@ import Button from "react-bootstrap/Button";
 import {useNavigate} from "react-router-dom";
 
 const Dashboard = () => {
+    // 변수 선언에 대한 기본적인 설명 추가해 두기
     const [musicLists, setMusicLists] = useState([]);
     const navigate = useNavigate();
 
+    // useEffect
     useEffect(() => {
         const fetchMusicLists = async () => {
             try {
+                // await, fetch에 대한 간단한 설명 추가하기
                 const response = await fetch("http://localhost:8080/api/musicLists");
+                // json()설명 추가
                 const data = await response.json();
 
                 setMusicLists(data);
             } catch (error) {
+                // 추후에 확인후 지우기
                 console.error("Error fetching musicLists:", error.message);
             }
         };
-        fetchMusicLists();
+        // 필요 유무 체크
+        fetchMusicLists(); // 확인후 삭제
     }, []);
 
     const handelDelete = async (musicListId) =>{
@@ -34,8 +40,10 @@ const Dashboard = () => {
                     prevMusicLists.filter((musicList) => musicList.id !== musicListId)
                 )
             }
+            // 추후에 확인후 지우기
             console.log(`Music List number ${musicListId} deleted successfully`);
         } catch (error) {
+            // 추후에 확인후 지우기
             console.error("Error deleting selected music", error.message);
         }
     }
@@ -76,7 +84,7 @@ const Dashboard = () => {
                                 <td>{musicList.title}</td>
                                 <td>{new Date(musicList.request_time).toLocaleString()}</td>
                                 <td>
-                                <Button variant="outline-secondary" onClick={()=> handleUpdate(musicList.id)}>Update</Button>
+                                    <Button variant="outline-secondary" onClick={()=> handleUpdate(musicList.id)}>Update</Button>
                                     <Button variant="outline-danger" onClick={()=> handelDelete(musicList.id)}>Delete</Button>
                                 </td>
                             </tr>
