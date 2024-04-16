@@ -46,7 +46,8 @@ const PostSong = () => {
                 }));
                 setFormData({
                     ...formData,
-                    searchResults: searchResults || []
+                    searchResults: searchResults || [],
+                    isSearchVisible: true
                 });
             } else {
                 throw new Error("Failed to fetch search results");
@@ -57,14 +58,24 @@ const PostSong = () => {
     }
 
     const handleSongClick = (selectedSong) => {
-        // 클릭된 곡 정보를 서버로 전송
-        sendSongToServer(selectedSong);
+        // 알림창을 표시하여 사용자의 선택을 받음
+        const confirmMessage = "選択した曲を送信しますか？";
+        if (window.confirm(confirmMessage)) {
+            // "はい" 버튼을 누른 경우
+            sendSongToServer(selectedSong);
+        } else {
+            // "いいえ" 버튼을 누른 경우
+            // 검색 화면으로 돌아가기 위해 navigate 함수를 사용하여 홈 화면으로 이동
+            navigate("/");
+        }
     }
+
 
     const sendSongToServer = async (selectedSong) => {
         try {
-            const response = await fetch("/api/addToPlaylist", {
+            const response = await fetch("http://localhost:8080/api/addToPlaylist", {
                 method: "POST",
+                mode: "cors", // CORS 요청을 보냄
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ song: selectedSong })
             });
@@ -93,24 +104,24 @@ const PostSong = () => {
                             onChange={handleInputChange}
                         />
                     </Form.Group>
-                    <Button variant="primary" type="submit" className="w-100">
+                    <Button variant="primary" type="submit" className="w-100" disabled={!formData.song}>
                         検索
                     </Button>
                 </Form>
-                <div className="youtube-container">
+                <div className={`youtube-container ${formData.isSearchVisible ? 'visible' : ''}`}>
                     <h2>検索結果</h2>
                     <ul>
                         {formData.searchResults.map((item, index) => (
-                            <li key={index} onClick={() => handleSongClick(item)}>
+                            <div key={index} onClick={() => handleSongClick(item)}>
                                 <div>
                                     {/* 유튜브 섬네일 이미지 표시 */}
-                                    <img src={item.snippet.thumbnails.default.url} alt="Thumbnail" />
+                                    <img src={item.snippet.thumbnails.default.url} alt="Thumbnail"/>
                                 </div>
                                 <div>
                                     {/* 검색 결과 제목 표시 */}
                                     <p>{item.snippet.title}</p>
                                 </div>
-                            </li>
+                            </div>
                         ))}
                     </ul>
                 </div>

@@ -45,3 +45,11 @@
     margin-top: 20px;
     margin-bottom: 100px;
 }
+
+.youtube-container h2 {
+    display: none;
+}
+
+.youtube-container.visible h2 {
+    display: block;
+}

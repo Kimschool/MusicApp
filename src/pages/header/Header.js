@@ -9,11 +9,16 @@ const Header = () => {
         <>
             <Navbar bg="primary" variant="dark">
                 <Container>
-                <Navbar.Brand to="/"><strong>달빛마루</strong></Navbar.Brand>
-                    <Nav className="ml-auto">
-                        <Nav.Link as={Link} to="/" className="nav-link">【検索ページへ】</Nav.Link>
-                        <Nav.Link as={Link} to="/musicList" className="nav-link">【プレイリスト】</Nav.Link>
-                    </Nav>
+                <Navbar.Brand as={Link} to="/">
+                    <img
+                        src="/image/images.png"
+                        width="30"
+                        height="30"
+                        className="d-inline-block align-top"
+                        alt="달빛마루 로고"
+                    />{' '}
+                    <strong>달빛마루</strong>
+                </Navbar.Brand>
                 </Container>
             </Navbar>
         </>
