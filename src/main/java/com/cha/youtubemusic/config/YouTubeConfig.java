@@ -1,4 +1,4 @@
-package com.cha.youtubemusic.service;
+package com.cha.youtubemusic.config;
 
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
