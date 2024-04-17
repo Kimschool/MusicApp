@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### privacy ###
+client_secret.json
+
