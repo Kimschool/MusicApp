@@ -16,7 +16,7 @@ public class YouTubeConfig {
         // HttpTransport 및 JsonFactory 객체 생성
         HttpTransport httpTransport = new NetHttpTransport();
         JsonFactory jsonFactory = new JacksonFactory();
-        String applicationName = "your-application-name";
+        String applicationName = "verdant-wares-420404";
 
         // YouTubeFactory를 사용하여 YouTube 인스턴스 생성 및 반환
         return YouTubeFactory.createYouTubeInstance(httpTransport, jsonFactory, applicationName);

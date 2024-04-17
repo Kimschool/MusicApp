@@ -20,13 +20,12 @@ public class MusicController {
     }
 
     @PostMapping("/api/addToPlaylist")
-    public ResponseEntity<String> addToPlaylist(@RequestBody String song) {
-        // 서비스를 호출하여 곡을 특정 재생목록에 추가
-        boolean success = musicService.addToPlaylist(song);
+    public ResponseEntity<String> addToPlaylist(@RequestBody String selectedSong) {
+        boolean success = musicService.addToPlaylist(selectedSong);
         if (success) {
-            return new ResponseEntity<>("Song added to playlist successfully!", HttpStatus.OK);
+            return ResponseEntity.ok("Song added to playlist successfully!");
         } else {
-            return new ResponseEntity<>("Failed to add song to playlist", HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add song to playlist");
         }
     }
 }
