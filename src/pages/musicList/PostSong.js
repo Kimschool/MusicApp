@@ -81,9 +81,9 @@ const PostSong = () => {
             });
 
             if(response.ok) {
-                alert("Song added to playlist successfully!");
+                alert("リクエスト承りました💖");
             } else {
-                throw new Error("Failed to add song to playlist");
+                throw new Error("もう一度やり直してください🤔");
             }
         } catch(error){
             console.error("Error adding song to playlist: ", error);
@@ -93,18 +93,21 @@ const PostSong = () => {
     return (
         <>
             <div className="center-form">
-                <h1>Request your favorite song!!</h1>
+                <h1 className="mochiy-pop-one-regular">音楽リクエスト🎵</h1>
                 <Form onSubmit={(e) => { e.preventDefault(); handleSearch(); }}>
                     <Form.Group controlId="formBasicName" autoComplete="off">
                         <Form.Control
                             type="text"
                             name="song"
-                            placeholder="曲を入力してください"
+                            placeholder="👉ここから入力👈"
                             value={formData.song}
                             onChange={handleInputChange}
                         />
+                        <Form.Text className="text-search">
+                            あなたの好きな曲を入れてください！
+                        </Form.Text>
                     </Form.Group>
-                    <Button variant="primary" type="submit" className="w-100" disabled={!formData.song}>
+                    <Button className="btn-request" type="submit" className="w-100" disabled={!formData.song}>
                         検索
                     </Button>
                 </Form>

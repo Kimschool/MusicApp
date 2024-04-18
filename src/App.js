@@ -5,6 +5,7 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import NoMatch from "./pages/noMatch/NoMatch";
 import PostSong from "./pages/musicList/PostSong";
 import UpdateSong from "./pages/musicList/UpdateSong";
+import About from "./pages/About";
 
 function App() {
   return (
@@ -14,8 +15,10 @@ function App() {
              <Route path='/' element={<PostSong/>}/>
              <Route path='/musicList' element={<Dashboard/>}/>
              <Route path='/musicList/:id' element={<UpdateSong/>}/>
+             <Route path="/about" element={<About />} />
              <Route path='*' element={<NoMatch/>}/>
          </Routes>
+
      </>
   );
 }

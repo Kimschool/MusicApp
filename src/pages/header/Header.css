@@ -1,12 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap');
+
+.mochiy-pop-one-regular {
+    font-family: "Mochiy Pop One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
 .navbar {
-    background-color: #333; /* Background color */
+    background-color: grey; /* Background color */
     overflow: hidden; /* Ensure contents don't overflow */
 }
 
 .navbar a {
     float: left; /* Float the links to the left */
     display: block; /* Display as block element */
-    color: #f2f2f2; /* Text color */
+    color: Yellow; /* Text color */
     text-align: center; /* Center the text */
     padding: 14px 16px; /* Padding for each link */
     text-decoration: none; /* Remove underline from links */
@@ -17,3 +25,5 @@
     background-color: #ddd;
     color: black;
 }
+
+
