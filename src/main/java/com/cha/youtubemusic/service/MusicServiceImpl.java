@@ -68,29 +68,5 @@ public class MusicServiceImpl implements MusicService {
             e.printStackTrace();
             return false;
         }
-
-//        try {
-//            // 선택된 노래 정보를 기반으로 비디오 ID를 가져옴
-//            String videoId = YouTubeAuth.getVideoIdFromSong(selectedSong);
-//
-//            // 만약 비디오 ID를 가져오지 못하면 실패 처리
-//            if (videoId == null) {
-//                System.out.println("Failed to get video ID from song information.");
-//                return false;
-//            }
-//
-//            PlaylistItem playlistItem = new PlaylistItem();
-//            playlistItem.setSnippet(new PlaylistItemSnippet());
-//            playlistItem.getSnippet().setPlaylistId("PLyBo_4T8mx6C70DwXtj53lhG5SXEvaw3D"); // 플레이리스트 ID를 설정
-//            playlistItem.getSnippet().setResourceId(new ResourceId().setKind("youtube#video").setVideoId(videoId));
-//
-////            youtube.playlistItems().insert(Collections.singletonList("snippet"), playlistItem).execute();
-//            // https://www.youtube.com/watch?v=bq2SjODrhJQ&list=PLyBo_4T8mx6C70DwXtj53lhG5SXEvaw3D
-//            youtube.playlistItems().insert(Collections.singletonList("snippet"), playlistItem).execute();
-//            return true;
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
     }
 }
