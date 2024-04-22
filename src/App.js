@@ -6,6 +6,7 @@ import NoMatch from "./pages/noMatch/NoMatch";
 import PostSong from "./pages/musicList/PostSong";
 import UpdateSong from "./pages/musicList/UpdateSong";
 import About from "./pages/About";
+import SearchSong from "./pages/musicList/SearchSong";
 
 function App() {
   return (
@@ -13,12 +14,12 @@ function App() {
       <Header/>
          <Routes>
              <Route path='/' element={<PostSong/>}/>
-             <Route path='/musicList' element={<Dashboard/>}/>
-             <Route path='/musicList/:id' element={<UpdateSong/>}/>
+             <Route path='/search/*' element={<SearchSong />} />
+             {/*<Route path='/musicList' element={<Dashboard/>}/>*/}
+             {/*<Route path='/musicList/:id' element={<UpdateSong/>}/>*/}
              <Route path="/about" element={<About />} />
              <Route path='*' element={<NoMatch/>}/>
          </Routes>
-
      </>
   );
 }

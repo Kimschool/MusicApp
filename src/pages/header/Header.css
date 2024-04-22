@@ -16,7 +16,6 @@
     display: block; /* Display as block element */
     color: Yellow; /* Text color */
     text-align: center; /* Center the text */
-    padding: 14px 16px; /* Padding for each link */
     text-decoration: none; /* Remove underline from links */
 }
 
@@ -25,5 +24,3 @@
     background-color: #ddd;
     color: black;
 }
-
-
