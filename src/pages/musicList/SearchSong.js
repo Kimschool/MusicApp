@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import "./SearchSong.css";
 import ConfirmationModal from "../modal/ConfirmationModal";
+import AutoModal from "../modal/AutoModal";
 
 // HTML 엔티티를 디코딩하는 함수
 function decodeHTMLEntities(text) {
@@ -17,7 +18,10 @@ const SearchSong = () => {
     const navigate = useNavigate();
     const [searchResults, setSearchResults] = useState([]);
     const [showModal, setShowModal] = useState(false); // showModal 상태 변수 추가
+    const [autoShowModal, setAutoShowModal] = useState(false); // showModal 상태 변수 추가
     const [selectedSong, setSelectedSong] = useState(null); // selectedSong 상태 변수 추가
+    const [modalMessage, setModalMessage] = useState(""); // 모달에 표시할 메시지 상태 변수 추가
+    const [countdown, setCountdown] = useState(3); // 카운트 다운 상태 변수 추가
 
 
     useEffect(() => {
@@ -52,14 +56,10 @@ const SearchSong = () => {
 
     const handleSongClick = (selectedSong) => {
         setSelectedSong(selectedSong);
+        setModalMessage("選択した曲を送信しますか？");
         setShowModal(true);
-        // const confirmMessage = "選択した曲を送信しますか？";
-        // if (window.confirm(confirmMessage)) {
-        //     sendSongToServer(selectedSong);
-        // } else {
-        //     navigate("/");
-        // }
     };
+
     const handleConfirm = () => {
         // 여기서 선택된 노래를 서버로 보냅니다.
         sendSongToServer(selectedSong);
@@ -80,15 +80,39 @@ const SearchSong = () => {
             });
 
             if(response.ok) {
-                alert("リクエスト承りました💖");
+                setModalMessage("リクエスト承りました💖");
+                setAutoShowModal(true); // 카운트 다운 시작
             } else {
-                throw new Error("もう一度やり直してください🚫");
+                setModalMessage("もう一度やり直してください🚫");
+                setAutoShowModal(true); // 카운트 다운 시작
             }
 
         } catch(error){
             console.error("Error adding song to playlist: ", error);
+            setModalMessage("もう一度やり直してください🚫");
+            setAutoShowModal(true); // 카운트 다운 시작
+        } finally {
+            setShowModal(true);
+            startCountdown(); // 카운트 다운 시작
         }
     }
+
+    const startCountdown = () => {
+        let count = 3; // 초기 카운트 다운 값
+        setCountdown(count); // 초기값 설정
+        
+        let timer = setInterval(() => {
+            count--; // 현재 카운트 다운 값을 1씩 감소
+            setCountdown(count); // 감소된 값을 countdown 상태로 설정
+            if (count === 0) { // 카운트 다운이 0이 되면
+                clearInterval(timer); // 타이머를 멈추고
+                setShowModal(false); // showModal을 false로 설정하여 모달을 닫습니다.
+                setAutoShowModal(false); // AutoModal 창도 함께 닫습니다.
+            }
+        }, 1000);
+    };
+    
+
 
     const handleBack = () => {
         navigate("/");
@@ -97,10 +121,16 @@ const SearchSong = () => {
     return (
         <>
             <ConfirmationModal
-                message="選択した曲を送信しますか？"
+                message={`${modalMessage}`}
                 show={showModal}
                 onHide={handleCancel}
                 onConfirm={handleConfirm}
+            />
+            <AutoModal
+                message={`${modalMessage}`}
+                show={autoShowModal}
+                countdown={`${countdown}秒後自動で閉まります。`}
+                onHide={() => setAutoShowModal(false)} // countdown이 0이 되면 AutoModal 창을 닫습니다.
             />
             <div className="center-form2">
                 <h1 className="mochiy-pop-one-regular">検索結果</h1>

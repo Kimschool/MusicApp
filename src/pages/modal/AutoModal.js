@@ -1,8 +1,7 @@
 import React from "react";
 import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
 
-const ConfirmationModal = ({ message, show, onHide, onConfirm }) => {
+const AutoModal = ({ message, show, onHide, countdown}) => {
     return (
         <Modal show={show} onHide={onHide} centered>
             <Modal.Header closeButton>
@@ -10,15 +9,10 @@ const ConfirmationModal = ({ message, show, onHide, onConfirm }) => {
             </Modal.Header>
             <Modal.Body>{message}</Modal.Body>
             <Modal.Footer>
-                <Button variant="primary" onClick={onConfirm}>
-                    はい
-                </Button>
-                <Button variant="secondary" onClick={onHide}>
-                    いいえ
-                </Button>
+                {countdown}
             </Modal.Footer>
         </Modal>
     );
 };
 
-export default ConfirmationModal;
+export default AutoModal;
