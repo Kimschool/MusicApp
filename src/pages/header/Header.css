@@ -7,8 +7,11 @@
 }
 
 .navbar {
+    max-width: auto;
+    max-height: auto;
     background-color: grey; /* Background color */
     overflow: hidden; /* Ensure contents don't overflow */
+    
 }
 
 .navbar a {

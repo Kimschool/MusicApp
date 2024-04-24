@@ -25,28 +25,26 @@ const PostSong = () => {
     };
 
     return (
-        <>
-            <div className="center-form">
-                <h1 className="mochiy-pop-one-regular">音楽リクエスト🎵</h1>
-                <Form onSubmit={handleSearch}>
-                    <Form.Group controlId="formBasicName" autoComplete="off">
-                        <Form.Control
-                            type="text"
-                            name="song"
-                            placeholder="👉ここから入力👈"
-                            value={formData.song}
-                            onChange={handleInputChange}
-                        />
-                        <Form.Text className="mochiy-pop-one-regular" style={{color:"yellow"}}>
-                            あなたの好きな曲を入れてください！
-                        </Form.Text>
-                    </Form.Group>
-                    <Button type="submit" className="w-100" disabled={!formData.song}>
-                        検索
-                    </Button>
-                </Form>
-            </div>
-        </>
+        <div className="center-form">
+            <h1 className="mochiy-pop-one-regular">音楽リクエスト🎵</h1>
+            <Form onSubmit={handleSearch}>
+                <Form.Group controlId="formBasicName" autoComplete="off">
+                    <Form.Control
+                        type="text"
+                        name="song"
+                        placeholder="👉ここから入力👈"
+                        value={formData.song}
+                        onChange={handleInputChange}
+                    />
+                    <Form.Text className="mochiy-pop-one-regular" style={{color:"yellow"}}>
+                        あなたの好きな曲を入れてください！
+                    </Form.Text>
+                </Form.Group>
+                <Button type="submit" className="w-100" disabled={!formData.song}>
+                    検索
+                </Button>
+            </Form>
+        </div>
     );
 };
 
